@@ -1,0 +1,1 @@
+Control the interal at which the RDAgent checks for new MSIX app attahc packages.
