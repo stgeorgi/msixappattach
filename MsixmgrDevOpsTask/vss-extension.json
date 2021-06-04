@@ -1,0 +1,37 @@
+{
+    "manifestVersion": 1,
+    "id": "MSIXMGR",
+    "name": "MSIXMGR",
+    "version": "0.1.36",
+    "publisher": "UnifyConsulting",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "description": "A task that expands MSIX-packaged applications on to a new VHD, VHDx, or CIM file.",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "icons": {
+        "default": "images/icon128.png",
+        "large": "images/icon512.png"
+    },
+    "files": [
+        {
+            "path": "MsixmgrTask"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "MSIXMGR",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "MsixmgrTask"
+            }
+        }
+    ]
+}

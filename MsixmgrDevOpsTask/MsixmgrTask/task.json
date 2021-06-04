@@ -1,0 +1,122 @@
+{
+  "id": "5c9d2dd0-b1af-11eb-9a7c-036c895bcc7b",
+  "name": "MSIXMGR",
+  "friendlyName": "MSIXMGR",
+  "description": "Expands MSIX-packaged applications on to a new VHD, VHDx, or CIM file.",
+  "author": "Jeremy Dyche & Jeremy Addy",
+  "category": "Utility",
+  "visibility": [
+    "Build",
+    "Release"
+  ],
+  "demands": [],
+  "version": {
+    "Major": "0",
+    "Minor": "1",
+    "Patch": "36"
+  },
+  "minimumAgentVersion": "1.95.0",
+  "instanceNameFormat": "MSIXMGR $(message)",
+  "inputs": [
+    {
+      "name": "connectedServiceName",
+      "aliases": [
+        "azureResourceManagerConnection"
+      ],
+      "type": "connectedService:AzureRM",
+      "label": "Azure Resource Manager connection",
+      "required": true,
+      "helpMarkDown": "Select the Azure Resource Manager connection."
+    },
+    {
+      "name": "subscriptionName",
+      "aliases": [
+        "subscriptionId"
+      ],
+      "type": "pickList",
+      "label": "Azure Subscription",
+      "required": true,
+      "helpMarkDown": "Select the Azure subscription."
+    },
+    {
+      "name": "location",
+      "type": "pickList",
+      "label": "Location",
+      "required": true,
+      "helpMarkDown": "The location the resources will be deployed to."
+    },
+    {
+      "name": "vhdFileName",
+      "type": "string",
+      "label": "VHD File Name",
+      "defaultValue": "apps.vhdx",
+      "required": true,
+      "helpMarkDown": "The name of the VHD, VHDX, or CIM file."
+    },
+    {
+      "name": "vhdSize",
+      "type": "string",
+      "label": "VHD Size (MB)",
+      "required": true,
+      "helpMarkDown": "The size of the VHD, VHDX, or CIM in megabytes."
+    },
+    {
+      "name": "rootAppsDirectory",
+      "type": "string",
+      "label": "Root Apps Directory",
+      "defaultValue": "apps",
+      "required": true,
+      "helpMarkDown": "The directory on the VHD, VHDX, or CIM where the expanded MSIX packages will be placed."
+    },
+    {
+      "name": "storageAccountName",
+      "type": "pickList",
+      "label": "Azure Storage Account",
+      "required": true,
+      "helpMarkDown": "The storage account where the msix packages are located."
+    },
+    {
+      "name": "storageMsixContainer",
+      "type": "string",
+      "label": "Azure Blob Storage MSIX Container",
+      "defaultValue": "msix",
+      "required": true,
+      "helpMarkDown": "The Azure Blob Storage container where the MSIX packages are stored."
+    },
+    {
+      "name": "storageVhdContainer",
+      "type": "string",
+      "label": "Azure Blob Storage VHD Container",
+      "defaultValue": "vhd",
+      "required": true,
+      "helpMarkDown": "The Azure Blob Storage container to store the VHD, VHDX, or CIM file."
+    }
+  ],
+  "dataSourceBindings": [
+    {
+      "target": "subscriptionName",
+      "endpointId": "$(connectedServiceName)",
+      "dataSourceName": "AzureSubscriptions",
+      "resultTemplate": "{ \"Value\" : \"{{{subscriptionId}}}\", \"DisplayValue\" : \"{{{displayName}}} ({{{subscriptionId}}})\" }"
+    },
+    {
+      "target": "location",
+      "endpointId": "$(connectedServiceName)",
+      "dataSourceName": "AzureLocationsByDeploymentScope",
+      "parameters": {
+        "subscriptionId": "$(subscriptionName)",
+        "deploymentScope": "$(deploymentScope)"
+      }
+    },
+    {
+      "target": "storageAccountName",
+      "endpointId": "$(connectedServiceName)",
+      "dataSourceName": "AzureStorageAccountRM"
+    }
+  ],
+  "execution": {
+    "PowerShell3": {
+      "target": "MsixmgrTask.ps1"
+    }
+  }
+}

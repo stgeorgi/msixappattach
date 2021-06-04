@@ -1,0 +1,16 @@
+# This is a sample pipeline file for the MSIXMGR task.
+pool:
+  vmImage: windows-latest
+
+steps:
+- task: MSIXMGR@0
+  inputs:
+    azureResourceManagerConnection: '<Your Azure RM Connection>'
+    subscriptionId: '<Your Azure Subscription ID>'
+    location: 'West US'
+    vhdFileName: 'apps.vhdx'
+    vhdSize: '500'
+    rootAppsDirectory: 'apps'
+    storageAccountName: 'msixmgrstorage'
+    storageMsixContainer: 'msixpackages'
+    storageVhdContainer: 'vhds'
